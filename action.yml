@@ -1,0 +1,63 @@
+name: 'Localhost Setup'
+description: 'Starts and stops LocalStack'
+
+inputs:
+  action:
+    description: 'Action to perform: start or stop'
+    required: true
+    default: 'start'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Start LocalStack
+      if: ${{ inputs.action == 'start' }}
+      run: |
+        docker run -d --name localstack_container \
+        -p 127.0.0.1:4566:4566 \
+        -p 127.0.0.1:4510-4559:4510-4559 \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        localstack/localstack
+        echo "Waiting for LocalStack to be ready..."
+        for i in {1..30}; do
+          if curl -s http://localhost:4566/_localstack/health | grep "\"s3\": \"available\""; then
+            echo "LocalStack is ready!"
+            exit 0
+          fi
+          echo "Still waiting for LocalStack..."
+          sleep 5
+        done
+        echo "LocalStack did not become ready in time."
+        exit 1
+      shell: bash
+
+    - name: Set up Python
+      if: ${{ inputs.action == 'prepare' }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.x'
+
+    - name: Install dependencies
+      if: ${{ inputs.action == 'prepare' }}
+      run: |
+        pip install -r requirements.txt
+      shell: bash
+
+    - name: Prepare TF entrypoint for LocalStack
+      if: ${{ inputs.action == 'prepare' }}
+      run: |
+        if ! python ./src/script.py; then
+          python3 ./src/script.py
+        fi
+      shell: bash
+
+    - name: Stop LocalStack
+      if: ${{ inputs.action == 'stop' }}
+      run: |
+        CONTAINER_IDS=$(docker ps -q --filter ancestor=localstack/localstack)
+        if [ -n "$CONTAINER_IDS" ]; then
+          docker stop $CONTAINER_IDS
+        else
+          echo "No running LocalStack containers found."
+        fi
+      shell: bash

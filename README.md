@@ -1,2 +1,1 @@
-# localstack-basic
-Set-up LocalStack from the latest stable image to plan Terraform infra against.
+Use this in your workflow/s to spin up a LocalStack container.

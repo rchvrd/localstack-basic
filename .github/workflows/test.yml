@@ -1,0 +1,22 @@
+name: "Test"
+on:
+  workflow_dispatch:
+jobs:
+  TestStart:
+    name:  Starting the LocalStack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: rchvrd/localstack-basic@v1
+        with:
+          action: start
+  TestStop:
+    name:  Stopping the LocalStack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: rchvrd/localstack-basic@v1
+        with:
+          action: stop
