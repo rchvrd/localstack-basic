@@ -31,6 +31,10 @@ runs:
         exit 1
       shell: bash
 
+    - name: Checkout
+      if: ${{ inputs.action == 'prepare' }}
+      uses: actions/checkout@v4
+
     - name: Set up Python
       if: ${{ inputs.action == 'prepare' }}
       uses: actions/setup-python@v5
