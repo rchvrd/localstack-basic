@@ -34,6 +34,14 @@ runs:
     - name: Checkout
       if: ${{ inputs.action == 'prepare' }}
       uses: actions/checkout@v4
+    - run: |
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the current directory:"
+        ls -la
+        cd /home/runner/work/ricards-poc/ricards-poc
+        ls -la
+      shell: bash
+
 
     - name: Set up Python
       if: ${{ inputs.action == 'prepare' }}
