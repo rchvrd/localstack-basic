@@ -31,10 +31,12 @@ runs:
       with:
         python-version: '3.13'
         cache: 'pip'
+
     - name: Install dependencies
       if: ${{ inputs.action == 'prepare' }}
       run: |
-        cd localstack-basic
+        echo "Current directory: $(pwd)"
+        cd ./localstack-basic
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         elif [ -f pyproject.toml ]; then
