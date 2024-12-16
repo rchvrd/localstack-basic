@@ -1,15 +1,29 @@
 name: 'Localhost Setup'
-description: 'Starts and stops LocalStack'
+description: 'Starts and stops LocalStack, prepares the environment for Python script execution'
 
 inputs:
   action:
-    description: 'Action to perform: start or stop'
+    description: 'Action to perform: start or stop, or prepare'
     required: true
     default: 'start'
 
 runs:
   using: 'composite'
   steps:
+    - name: Checkout
+      # if: ${{ inputs.action == 'prepare' }}
+      uses: actions/checkout@v4
+      with:
+        repository: 'rchvrd/localstack-basic'
+    - run: |
+        echo "THIS IS ACTION'S CHECKOUT"
+        echo "Current directory: $(pwd)"
+        echo "Listing files in the current directory:"
+        ls -la
+        cd /home/runner/work/ricards-poc/ricards-poc
+        ls -la
+      shell: bash
+
     - name: Start LocalStack
       if: ${{ inputs.action == 'start' }}
       run: |
@@ -30,19 +44,6 @@ runs:
         echo "LocalStack did not become ready in time."
         exit 1
       shell: bash
-
-    - name: Checkout
-      if: ${{ inputs.action == 'prepare' }}
-      uses: actions/checkout@v4
-    - run: |
-        echo "THIS IS ACTION'S CHECKOUT"
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
-        cd /home/runner/work/ricards-poc/ricards-poc
-        ls -la
-      shell: bash
-
 
     - name: Set up Python
       if: ${{ inputs.action == 'prepare' }}
