@@ -35,8 +35,9 @@ runs:
     - name: Prepare TF entrypoint for LocalStack
       if: ${{ inputs.action == 'prepare' }}
       run: |
-        if ! python ./src/script.py; then
-          python3 ./src/script.py
+        echo "Current directory: $(pwd)"
+        if ! python localstack-basic/src/script.py; then
+          python3 localstack-basic/src/script.py
         fi
       shell: bash
 
