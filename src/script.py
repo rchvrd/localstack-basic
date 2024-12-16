@@ -1,9 +1,9 @@
-import hcl
+import hcl2
 import json
 
 with open('./main.tf', 'r') as file:
     # Parse the HCL data from the main.tf file as a dictionary
-    hcl_data = hcl.load(file)
+    hcl_data = hcl2.load(file)
 with open('./res/services.json', 'r') as file:
     # Load the list of AWS services from the services.json file
     service_list = json.load(file)

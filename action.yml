@@ -11,10 +11,11 @@ runs:
   using: 'composite'
   steps:
     - name: Checkout
-      # if: ${{ inputs.action == 'prepare' }}
+      if: ${{ inputs.action == 'prepare' }}
       uses: actions/checkout@v4
       with:
         repository: 'rchvrd/localstack-basic'
+        path: 'localstack-basic'
     - run: |
         echo "THIS IS ACTION'S CHECKOUT"
         echo "Current directory: $(pwd)"
@@ -22,6 +23,21 @@ runs:
         ls -la
         cd /home/runner/work/ricards-poc/ricards-poc
         ls -la
+      shell: bash
+
+    - name: Set up Python
+      if: ${{ inputs.action == 'prepare' }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.13'
+        cache: 'pip'
+
+    - name: Prepare TF entrypoint for LocalStack
+      if: ${{ inputs.action == 'prepare' }}
+      run: |
+        if ! python ./src/script.py; then
+          python3 ./src/script.py
+        fi
       shell: bash
 
     - name: Start LocalStack
@@ -43,21 +59,6 @@ runs:
         done
         echo "LocalStack did not become ready in time."
         exit 1
-      shell: bash
-
-    - name: Set up Python
-      if: ${{ inputs.action == 'prepare' }}
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.13'
-        cache: 'pip'
-
-    - name: Prepare TF entrypoint for LocalStack
-      if: ${{ inputs.action == 'prepare' }}
-      run: |
-        if ! python ./src/script.py; then
-          python3 ./src/script.py
-        fi
       shell: bash
 
     - name: Stop LocalStack
