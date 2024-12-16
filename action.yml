@@ -36,7 +36,8 @@ runs:
       if: ${{ inputs.action == 'prepare' }}
       run: |
         echo "Current directory: $(pwd)"
-        cd ./localstack-basic
+        ls -la
+        cd /home/runner/work/ricards-poc/ricards-poc/localstack-basic
         if [ -f requirements.txt ]; then
           pip install -r requirements.txt
         elif [ -f pyproject.toml ]; then
