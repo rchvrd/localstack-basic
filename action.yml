@@ -46,6 +46,7 @@ runs:
         else
           echo "No requirements.txt or pyproject.toml found"
           exit 1
+        fi
       shell: bash
 
     - name: Prepare TF entrypoint for LocalStack
