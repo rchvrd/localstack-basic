@@ -1,10 +1,9 @@
-import hcl2
-import subprocess
+import hcl
 import json
 
 with open('main.tf', 'r') as file:
     # Parse the HCL data from the main.tf file as a dictionary
-    hcl_data = hcl2.load(file)
+    hcl_data = hcl.load(file)
 with open('./localstack-basic/res/services.json', 'r') as file:
     # Load the list of AWS services from the services.json file
     service_list = json.load(file)
@@ -21,9 +20,12 @@ for provider in hcl_data.get('provider', []):
         provider['aws']['skip_requesting_account_id'] = 'true'
         provider['aws']['endpoints'] = {service: localstack_endpoint for service in services}
 
+# Convert the modified data back to HCL format
+hcl_string = hcl.dumps(hcl_data)
+
 # Write the modified HCL data back to a file
 with open('main.tf', 'w') as file:
-    json.dump(hcl_data, file, indent=2)
+    file.write(hcl_string)
 
 # Print the contents of the modified_main.tf file
 with open('main.tf', 'r') as file:
