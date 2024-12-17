@@ -15,9 +15,9 @@ localstack_endpoint = 'http://localhost:4566'
 
 for provider in hcl_data.get('provider', []):
     if 'aws' in provider:
-        provider['aws']['skip_metadata_api_check'] = 'true'
-        provider['aws']['skip_credentials_validation'] = 'true'
-        provider['aws']['skip_requesting_account_id'] = 'true'
+        provider['aws']['skip_metadata_api_check'] = True
+        provider['aws']['skip_credentials_validation'] = True
+        provider['aws']['skip_requesting_account_id'] = True
         provider['aws']['endpoints'] = {service: localstack_endpoint for service in services}
 
 # Convert the modified data back to HCL format
