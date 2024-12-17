@@ -1,5 +1,9 @@
 import hcl2
+import subprocess
 import json
+
+print(f'DIRECTORY: {subprocess.run(["pwd"], capture_output=True, text=True).stdout}')
+print(f'FILES: {subprocess.run(["ls"], capture_output=True, text=True).stdout}')
 
 with open('../main.tf', 'r') as file:
     # Parse the HCL data from the main.tf file as a dictionary
