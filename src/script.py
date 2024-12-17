@@ -27,3 +27,11 @@ for provider in hcl_data.get('provider', []):
 # Write the modified HCL data back to a file
 with open('modified_main.tf', 'w') as file:
     json.dump(hcl_data, file, indent=2)
+
+# Print the contents of the modified_main.tf file
+with open('main.tf', 'r') as file:
+    print(f'MAIN.TF:\n{file.read()}')
+
+# Print the contents of the modified_main.tf file
+with open('modified_main.tf', 'r') as file:
+    print(f'MODIFIED_MAIN.TF:\n{file.read()}')
