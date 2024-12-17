@@ -5,10 +5,10 @@ import json
 print(f'DIRECTORY: {subprocess.run(["pwd"], capture_output=True, text=True).stdout}')
 print(f'FILES: {subprocess.run(["ls"], capture_output=True, text=True).stdout}')
 
-with open('../main.tf', 'r') as file:
+with open('main.tf', 'r') as file:
     # Parse the HCL data from the main.tf file as a dictionary
     hcl_data = hcl2.load(file)
-with open('res/services.json', 'r') as file:
+with open('./localstack-basic/res/services.json', 'r') as file:
     # Load the list of AWS services from the services.json file
     service_list = json.load(file)
 
