@@ -63,7 +63,7 @@ runs:
       run: |
         echo "Current directory: $(pwd)"
         chmod +x ./localstack-basic/res/script.sh
-        ./localstack-basic/res/script.sh
+        ./localstack-basic/src/script.sh
       shell: bash
 
     - name: Start LocalStack
