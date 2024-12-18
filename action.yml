@@ -62,7 +62,7 @@ runs:
       if: ${{ inputs.action == 'prepare' }}
       run: |
         echo "Current directory: $(pwd)"
-        chmod +x ./localstack-basic/res/script.sh
+        chmod +x ./localstack-basic/src/script.sh
         ./localstack-basic/src/script.sh
       shell: bash
 
