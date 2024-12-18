@@ -64,6 +64,7 @@ runs:
         echo "Current directory: $(pwd)"
         chmod +x ./localstack-basic/src/script.sh
         ./localstack-basic/src/script.sh
+        cp ./localstack-basic/res/override.tf ./override.tf
       shell: bash
 
     - name: Start LocalStack

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define file paths
-OVERRIDE_FILE="./localstack-basic/res/override.tf"
+ENTRYPOINT="./main.tf"
 SERVICES_FILE="./localstack-basic/res/services.json"
 LOCALSTACK_ENDPOINT="http://localhost:4566"
 
@@ -14,16 +14,23 @@ for SERVICE in $SERVICES; do
   ENDPOINTS+="    $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
 done
 
-# Insert endpoints into override.tf
+# Insert configuration flags and endpoints into main.tf
 awk -v endpoints="$ENDPOINTS" '
+  /provider "aws" \{/ {
+    print
+    print "  skip_credentials_validation = true"
+    print "  skip_metadata_api_check     = true"
+    print "  skip_requesting_account_id  = true"
+    next
+  }
   /endpoints \{/ {
     print
     print endpoints
     next
   }
   { print }
-' "$OVERRIDE_FILE" > "$OVERRIDE_FILE.tmp" && mv "$OVERRIDE_FILE.tmp" "$OVERRIDE_FILE"
+' "$ENTRYPOINT" > "$ENTRYPOINT.tmp" && mv "$ENTRYPOINT.tmp" "$ENTRYPOINT"
 
-# Print the contents of the modified override.tf file
-echo "OVERRIDE.TF:"
-cat "$OVERRIDE_FILE"
+# Print the contents of the modified main.tf file
+echo "MAIN.TF:"
+cat "$ENTRYPOINT"
