@@ -1,5 +1,5 @@
 name: 'Localhost Setup'
-description: 'Starts and stops LocalStack, prepares the environment for Python script execution'
+description: 'Starts and stops LocalStack, executes a Bash script that prepares the Terraform entrypoint for LocalStack'
 
 inputs:
   action:
@@ -16,52 +16,10 @@ runs:
       with:
         repository: 'rchvrd/localstack-basic'
         path: 'localstack-basic'
-    - run: |
-        echo "THIS IS ACTION'S CHECKOUT"
-        echo "Current directory: $(pwd)"
-        echo "Listing files in the current directory:"
-        ls -la
-        cd /home/runner/work/ricards-poc/ricards-poc
-        ls -la
-      shell: bash
-
-    # - name: Set up Python
-    #   if: ${{ inputs.action == 'prepare' }}
-    #   uses: actions/setup-python@v5
-    #   with:
-    #     python-version: '3.13'
-    #     cache: 'pip'
-
-    # - name: Install dependencies
-    #   if: ${{ inputs.action == 'prepare' }}
-    #   run: |
-    #     echo "Current directory: $(pwd)"
-    #     ls -la
-    #     cd /home/runner/work/ricards-poc/ricards-poc/localstack-basic
-    #     if [ -f requirements.txt ]; then
-    #       pip install -r requirements.txt
-    #     elif [ -f pyproject.toml ]; then
-    #       pip install poetry
-    #       poetry install
-    #     else
-    #       echo "No requirements.txt or pyproject.toml found"
-    #       exit 1
-    #     fi
-    #   shell: bash
-
-    # - name: Prepare TF entrypoint for LocalStack
-    #   if: ${{ inputs.action == 'prepare' }}
-    #   run: |
-    #     echo "Current directory: $(pwd)"
-    #     if ! python localstack-basic/src/script.py; then
-    #       python3 localstack-basic/src/script.py
-    #     fi
-    #   shell: bash
 
     - name: Prepare TF entrypoint for LocalStack
       if: ${{ inputs.action == 'prepare' }}
       run: |
-        echo "Current directory: $(pwd)"
         chmod +x ./localstack-basic/src/script.sh
         ./localstack-basic/src/script.sh
         cp ./localstack-basic/res/override.tf ./override.tf
