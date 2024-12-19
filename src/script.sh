@@ -36,7 +36,7 @@ LOCALSTACK_ENDPOINT="http://localhost:4566"
 
 # Generate endpoints block
 ENDPOINTS=""
-for SERVICE in $SERVICES; do
+for SERVICE in $SERVICES;
   ENDPOINTS+="    $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
 done
 
@@ -47,10 +47,6 @@ awk -v endpoints="$ENDPOINTS" '
     print "  skip_credentials_validation = true"
     print "  skip_metadata_api_check     = true"
     print "  skip_requesting_account_id  = true"
-    next
-  }
-  /endpoints \{/ {
-    print
     print endpoints
     next
   }
