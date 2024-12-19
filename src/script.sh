@@ -35,10 +35,11 @@ SERVICES=$(jq -r '.[]' "$SERVICES_FILE")
 LOCALSTACK_ENDPOINT="http://localhost:4566"
 
 # Generate endpoints block
-ENDPOINTS=""
+ENDPOINTS="  endpoints {\n"
 for SERVICE in $SERVICES; do
-  ENDPOINTS+="  $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
+  ENDPOINTS+="    $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
 done
+ENDPOINTS+="  }\n"
 
 # Insert configuration flags and endpoints into main.tf
 awk -v endpoints="$ENDPOINTS" '
