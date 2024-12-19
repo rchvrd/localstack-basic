@@ -36,7 +36,7 @@ LOCALSTACK_ENDPOINT="http://localhost:4566"
 
 # Generate endpoints block
 ENDPOINTS=""
-for SERVICE in $SERVICES;
+for SERVICE in $SERVICES; do
   ENDPOINTS+="    $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
 done
 
