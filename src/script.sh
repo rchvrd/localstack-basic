@@ -34,10 +34,10 @@ SERVICES=$(jq -r '.[]' "$SERVICES_FILE")
 # Set LocalStack endpoint
 LOCALSTACK_ENDPOINT="http://localhost:4566"
 
-# Generate endpoints block
+# Generate endpoints block with proper alignment
 ENDPOINTS="  endpoints {\n"
 for SERVICE in $SERVICES; do
-  ENDPOINTS+="    $SERVICE = \"$LOCALSTACK_ENDPOINT\"\n"
+  ENDPOINTS+="    $(printf "%-15s" "$SERVICE") = \"$LOCALSTACK_ENDPOINT\"\n"
 done
 ENDPOINTS+="  }\n"
 
